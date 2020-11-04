@@ -1,43 +1,72 @@
 <?php
-
-trait Hewan
-{
-    public $health = 50;
-    public function atraksi()
+    trait Hewan
     {
-        echo $this->getName() . 'sedang' . $this->getAbility();
+        public $nama, $darah=50, $jumlahKaki, $keahlian;
+
+        public function atraksi($elang)
+        {
+            return "Kemudian ".$this->nama." berlari cepat untuk menangkap ".$elang->nama." yang sedang terbang tinggi untuk menghindar"."."."<br>";
+        }
     }
 
-    abstract public function getName();
-    abstract public function getLegs();
-    public function getHealth()
+    trait Fight
     {
-        return $this->health;
+        public $attackPower, $defencePower;
+
+        public function serang($harimau)
+        {
+            return "Setelah itu  ".$this->nama." menyerang ".$harimau->nama." dan ".$harimau->nama." membalas menyerang ".$this->nama."."."<br>";
+        }
+
+        public function diserang($harimau)
+        {
+            $this->darah = $this->darah-($harimau->attackPower/$this->defencePower);
+            return " Elang terkena serangan oleh ".$harimau->nama. " yang menyebabkan darah berkurang menjadi ".$this->darah."."."<br>";
+        }
     }
-    public function setHealth($new.health)
-}
-class Elang {
-    use Hewan, Fight;
 
-    public $legs = 2;
-    public $ability = "terbang tinggi";
-    public $attackPower = 10;
-    public $defencePower = 5;
+    class Harimau
+    {
+        use Hewan, Fight;
 
-    public function getInfoHewan(){
-        return $this->hewan;
+        public function GetInfoHewan()
+        {
+            return "Pada suatu pagi ada seekor ".$this->nama." yang mempunyai jumlah kaki ".$this->jumlahKaki.
+            " memiliki keahlian ".$this->keahlian." attack power = ".$this->attackPower.
+            " dan defence power = ".$this->defencePower."."."<br>";
+        }
     }
-}
-$Elang_1 = new Elang;
-echo
-class Harimau {
-    use Hewan, Fight;
 
-    public $legs = 4;
-    public $ability = "lari cepat";
-    public $attackPower = 7;
-    public $defencePower = 8;
+    class Elang
+    {
+        use Hewan, Fight;
 
-    public function getInfoHewan(){
-        return $this->hewan;
-}
+        public function GetInfoHewan()
+        {
+            return "Lalu datanglah seekor ".$this->nama." yang mempunyai jumlah kaki ".$this->jumlahKaki.
+            " memiliki keahlian ".$this->keahlian." attack power = ".$this->attackPower.
+            " dan defence power = ".$this->defencePower."."."<br>";
+        }
+    }
+
+    $harimau    = new Harimau();
+    $harimau->nama          = "harimau";
+    $harimau->jumlahKaki    = 4;
+    $harimau->keahlian      = "lari cepat";
+    $harimau->attackPower   = 7;
+    $harimau->defencePower  = 8;
+    echo $harimau->GetInfoHewan();
+
+    $elang      = new Elang();
+    $elang->nama          = "elang";
+    $elang->jumlahKaki    = 2;
+    $elang->keahlian      = "terbang tinggi";
+    $elang->attackPower   = 10;
+    $elang->defencePower  = 5;
+    echo $elang->GetInfoHewan();
+
+   echo $elang->serang($harimau);
+   echo $harimau->atraksi($elang);
+
+  echo $elang->diserang($harimau);
+?> 
